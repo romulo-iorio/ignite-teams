@@ -1,7 +1,7 @@
 import { ThemeProvider } from "styled-components";
 import { Groups } from "@screens";
 
-import theme from "@theme";
+import theme from "./src/theme";
 
 export default function App() {
   return (
