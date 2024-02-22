@@ -14,6 +14,9 @@ export const NewGroup = () => {
 
   const handleNewGroup = async () => {
     try {
+      if (!groupName.trim())
+        throw new AppError("O nome do grupo é obrigatório.");
+
       await createGroup(groupName);
       navigateToPlayers(groupName);
     } catch (error) {
