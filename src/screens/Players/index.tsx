@@ -9,6 +9,7 @@ import {
   ButtonIcon,
   Filter,
   PlayerCard,
+  ListEmpty,
 } from "@components";
 
 import { Container, Form, ListHeader, NumberOfPlayers } from "./styles";
@@ -29,6 +30,10 @@ export const Players = () => {
     { name: "Larissa", id: "6" },
     { name: "Márcia", id: "7" },
     { name: "Fernanda", id: "8" },
+    { name: "João", id: "9" },
+    { name: "Maria", id: "10" },
+    { name: "Pedro", id: "11" },
+    { name: "Paulo", id: "12" },
   ]);
 
   return (
@@ -64,12 +69,22 @@ export const Players = () => {
       </ListHeader>
 
       <FlatList
+        ListEmptyComponent={() => (
+          <ListEmpty message="Nenhuma turma encontrada. Que tal cadastrar a primeira turma?" />
+        )}
         renderItem={({ item }) => (
           <PlayerCard name={item.name} onRemovePlayer={() => {}} />
         )}
         keyExtractor={(item) => item.id}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={[
+          players.length === 0 && { flex: 1 },
+          { paddingBottom: 100 },
+        ]}
         data={players}
       />
+
+      <Button title="Remover Turma" type="SECONDARY" />
     </Container>
   );
 };
