@@ -19,5 +19,9 @@ export const AppRoutes: React.FC = () => {
     <Screen key={screen.name} name={screen.name} component={screen.component} />
   ));
 
-  return <Navigator>{renderScreens}</Navigator>;
+  return (
+    <Navigator screenOptions={{ headerShown: false }}>
+      {renderScreens}
+    </Navigator>
+  );
 };
