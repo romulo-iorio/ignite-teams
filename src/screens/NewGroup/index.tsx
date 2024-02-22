@@ -3,16 +3,27 @@ import { useState } from "react";
 
 import { createGroup } from "@storage/group/createGroup";
 import { useRoutes } from "@routes/useRoutes";
+import { AppError } from "@utils/AppError";
 
 import { Container, Content, Icon } from "./styles";
+import { Alert } from "react-native";
 
 export const NewGroup = () => {
   const { navigateToPlayers } = useRoutes();
   const [groupName, setGroupName] = useState<string>("");
 
   const handleNewGroup = async () => {
-    await createGroup(groupName);
-    navigateToPlayers(groupName);
+    try {
+      await createGroup(groupName);
+      navigateToPlayers(groupName);
+    } catch (error) {
+      const isAppError = error instanceof AppError;
+
+      if (isAppError) return Alert.alert("Novo Grupo", error.message);
+
+      console.error(error);
+      Alert.alert("Novo Grupo", "Não foi possível criar um novo grupo.");
+    }
   };
 
   return (
