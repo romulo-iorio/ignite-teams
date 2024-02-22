@@ -1,26 +1,32 @@
+import { useFocusEffect } from "@react-navigation/native";
+import { useCallback, useState } from "react";
 import { FlatList } from "react-native";
-import { useState } from "react";
 
 import { Highlight, Header, GroupCard, ListEmpty, Button } from "@components";
+import { getAllGroups } from "@storage/group/getAllGroups";
+import { useRoutes } from "@routes/useRoutes";
+import { Group } from "src/@types/Group";
 
 import { Container } from "./styles";
-import { useRoutes } from "@routes/useRoutes";
 
-interface GroupProps {
-  groupName: string;
-  id: string;
-}
+const fetchGroups = async (
+  setGroups: React.Dispatch<React.SetStateAction<Group[]>>
+) => {
+  const groups = await getAllGroups();
+  const orderedGroups = groups.sort((a, b) => b.createdAt - a.createdAt);
+  setGroups(orderedGroups);
+};
 
 export const Groups = () => {
   const { navigateToNewGroup } = useRoutes();
 
-  const [groups, setGroups] = useState<GroupProps[]>([
-    { id: "1", groupName: "Galera do Ignite" },
-    { id: "2", groupName: "Galera do React" },
-    { id: "3", groupName: "Galera do Node" },
-  ]);
+  const [groups, setGroups] = useState<Group[]>([]);
 
-  const handleNewGroup = () => navigateToNewGroup();
+  useFocusEffect(
+    useCallback(() => {
+      fetchGroups(setGroups);
+    }, [])
+  );
 
   return (
     <Container>
@@ -33,12 +39,12 @@ export const Groups = () => {
           <ListEmpty message="Nenhuma turma encontrada. Que tal cadastrar a primeira turma?" />
         )}
         contentContainerStyle={groups.length === 0 && { flex: 1 }}
-        renderItem={({ item }) => <GroupCard title={item.groupName} />}
+        renderItem={({ item }) => <GroupCard title={item.name} />}
         keyExtractor={(item) => item.id}
         data={groups}
       />
 
-      <Button title="Criar nova turma" onPress={handleNewGroup} />
+      <Button title="Criar nova turma" onPress={navigateToNewGroup} />
     </Container>
   );
 };

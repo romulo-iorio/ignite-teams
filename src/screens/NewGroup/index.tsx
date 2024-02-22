@@ -1,6 +1,7 @@
 import { Highlight, Header, Button, Input } from "@components";
 import { useState } from "react";
 
+import { createGroup } from "@storage/group/createGroup";
 import { useRoutes } from "@routes/useRoutes";
 
 import { Container, Content, Icon } from "./styles";
@@ -9,7 +10,8 @@ export const NewGroup = () => {
   const { navigateToPlayers } = useRoutes();
   const [groupName, setGroupName] = useState<string>("");
 
-  const handleNewGroup = () => {
+  const handleNewGroup = async () => {
+    await createGroup(groupName);
     navigateToPlayers(groupName);
   };
 
