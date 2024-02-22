@@ -1,4 +1,4 @@
-import { Highlight, Header, Button } from "@components";
+import { Highlight, Header, Button, Input } from "@components";
 
 import { Container, Content, Icon } from "./styles";
 
@@ -15,7 +15,9 @@ export const NewGroup = () => {
           title="Nova turma"
         />
 
-        <Button title="Criar" />
+        <Input />
+
+        <Button title="Criar" style={{ marginTop: 20 }} />
       </Content>
     </Container>
   );
