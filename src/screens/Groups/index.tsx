@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 import { FlatList } from "react-native";
 
 import { Highlight, Header, GroupCard, ListEmpty, Button } from "@components";
-import { getAllGroups } from "@storage/group/getAllGroups";
+import { getAllGroups } from "@storage/group";
 import { useRoutes } from "@routes/useRoutes";
 import { Group } from "src/@types/Group";
 

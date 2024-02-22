@@ -1,8 +1,8 @@
 import { Highlight, Header, Button, Input } from "@components";
 import { useState } from "react";
 
-import { createGroup } from "@storage/group/createGroup";
 import { useRoutes } from "@routes/useRoutes";
+import { createGroup } from "@storage/group";
 import { AppError } from "@utils/AppError";
 
 import { Container, Content, Icon } from "./styles";
