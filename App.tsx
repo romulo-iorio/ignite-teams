@@ -6,8 +6,8 @@ import {
 import { ThemeProvider } from "styled-components/native";
 import { StatusBar } from "react-native";
 
+import { Routes } from "@routes/index";
 import { Loading } from "@components";
-import { Players } from "@screens";
 
 import theme from "./src/theme";
 
@@ -22,7 +22,7 @@ export default function App() {
         translucent
       />
 
-      {fontsLoaded ? <Players /> : <Loading />}
+      {fontsLoaded ? <Routes /> : <Loading />}
     </ThemeProvider>
   );
 }
