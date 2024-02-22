@@ -1,6 +1,5 @@
-import { ButtonIcon } from "@components";
-
 import { Container, Icon, Name } from "./styles";
+import { ButtonIcon } from "../ButtonIcon";
 
 interface Props {
   onRemovePlayer: () => void;
