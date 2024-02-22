@@ -18,7 +18,7 @@ const fetchGroups = async (
 };
 
 export const Groups = () => {
-  const { navigateToNewGroup } = useRoutes();
+  const { navigateToNewGroup, navigateToPlayers } = useRoutes();
 
   const [groups, setGroups] = useState<Group[]>([]);
 
@@ -27,6 +27,8 @@ export const Groups = () => {
       fetchGroups(setGroups);
     }, [])
   );
+
+  const handleOpenGroup = (groupName: string) => navigateToPlayers(groupName);
 
   return (
     <Container>
@@ -39,7 +41,12 @@ export const Groups = () => {
           <ListEmpty message="Nenhuma turma encontrada. Que tal cadastrar a primeira turma?" />
         )}
         contentContainerStyle={groups.length === 0 && { flex: 1 }}
-        renderItem={({ item }) => <GroupCard title={item.name} />}
+        renderItem={({ item }) => (
+          <GroupCard
+            onPress={() => handleOpenGroup(item.name)}
+            title={item.name}
+          />
+        )}
         keyExtractor={(item) => item.id}
         data={groups}
       />
