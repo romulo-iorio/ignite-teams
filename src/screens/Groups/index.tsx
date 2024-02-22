@@ -1,4 +1,4 @@
-import { Highlight, Header } from "@components";
+import { Highlight, Header, GroupCard } from "@components";
 
 import { Container } from "./styles";
 
@@ -8,6 +8,8 @@ export const Groups = () => {
       <Header />
 
       <Highlight title="Turmas" subTitle="Jogue com a sua turma" />
+
+      <GroupCard title="Galera do Ignite" />
     </Container>
   );
 };
