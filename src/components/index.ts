@@ -1,5 +1,6 @@
 export * from "./Button";
 export * from "./ButtonIcon";
+export * from "./Filter";
 export * from "./GroupCard";
 export * from "./Header";
 export * from "./Highlight";
