@@ -1,4 +1,4 @@
-import { Highlight, Header, Button, Input } from "@components";
+import { Highlight, Header, Button, Input, ButtonIcon } from "@components";
 
 import { Container } from "./styles";
 
@@ -14,7 +14,7 @@ export const Players = () => {
 
       <Input placeholder="Nome da turma" />
 
-      <Button title="Criar" style={{ marginTop: 20 }} />
+      <ButtonIcon iconName="add" />
     </Container>
   );
 };
