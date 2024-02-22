@@ -15,7 +15,7 @@ export const NewGroup = () => {
           title="Nova turma"
         />
 
-        <Input />
+        <Input placeholder="Nome da turma" />
 
         <Button title="Criar" style={{ marginTop: 20 }} />
       </Content>
