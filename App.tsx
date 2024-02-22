@@ -3,7 +3,7 @@ import {
   Roboto_700Bold,
   useFonts,
 } from "@expo-google-fonts/roboto";
-import { ThemeProvider } from "styled-components";
+import { ThemeProvider } from "styled-components/native";
 import { StatusBar } from "react-native";
 
 import { Loading } from "@components";
