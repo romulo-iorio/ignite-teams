@@ -13,12 +13,14 @@ export const NewGroup = () => {
   const [groupName, setGroupName] = useState<string>("");
 
   const handleNewGroup = async () => {
+    const trimmedGroupName = groupName.trim();
+
     try {
-      if (!groupName.trim())
+      if (!trimmedGroupName)
         throw new AppError("O nome do grupo é obrigatório.");
 
-      await createGroup(groupName);
-      navigateToPlayers(groupName);
+      await createGroup(trimmedGroupName);
+      navigateToPlayers(trimmedGroupName);
     } catch (error) {
       const isAppError = error instanceof AppError;
 
