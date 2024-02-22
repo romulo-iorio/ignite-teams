@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Highlight, Header, GroupCard, ListEmpty, Button } from "@components";
 
 import { Container } from "./styles";
+import { useRoutes } from "@routes/useRoutes";
 
 interface GroupProps {
   groupName: string;
@@ -11,11 +12,15 @@ interface GroupProps {
 }
 
 export const Groups = () => {
+  const { navigateToNewGroup } = useRoutes();
+
   const [groups, setGroups] = useState<GroupProps[]>([
     { id: "1", groupName: "Galera do Ignite" },
     { id: "2", groupName: "Galera do React" },
     { id: "3", groupName: "Galera do Node" },
   ]);
+
+  const handleNewGroup = () => navigateToNewGroup();
 
   return (
     <Container>
@@ -33,7 +38,7 @@ export const Groups = () => {
         data={groups}
       />
 
-      <Button title="Criar nova turma" />
+      <Button title="Criar nova turma" onPress={handleNewGroup} />
     </Container>
   );
 };
