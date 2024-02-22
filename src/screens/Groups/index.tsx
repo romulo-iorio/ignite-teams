@@ -1,9 +1,9 @@
+import { FlatList } from "react-native";
 import { useState } from "react";
 
-import { Highlight, Header, GroupCard, ListEmpty } from "@components";
+import { Highlight, Header, GroupCard, ListEmpty, Button } from "@components";
 
 import { Container } from "./styles";
-import { FlatList } from "react-native";
 
 interface GroupProps {
   groupName: string;
@@ -32,6 +32,8 @@ export const Groups = () => {
         keyExtractor={(item) => item.id}
         data={groups}
       />
+
+      <Button title="Criar nova turma" />
     </Container>
   );
 };
