@@ -1,8 +1,16 @@
 import { Highlight, Header, Button, Input } from "@components";
 
+import { useRoutes } from "@routes/useRoutes";
+
 import { Container, Content, Icon } from "./styles";
 
 export const NewGroup = () => {
+  const { navigateToPlayers } = useRoutes();
+
+  const handleNewGroup = () => {
+    navigateToPlayers("1");
+  };
+
   return (
     <Container>
       <Header showBackButton />
@@ -17,7 +25,11 @@ export const NewGroup = () => {
 
         <Input placeholder="Nome da turma" />
 
-        <Button title="Criar" style={{ marginTop: 20 }} />
+        <Button
+          style={{ marginTop: 20 }}
+          onPress={handleNewGroup}
+          title="Criar"
+        />
       </Content>
     </Container>
   );
