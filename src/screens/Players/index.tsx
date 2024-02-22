@@ -13,13 +13,21 @@ import {
 } from "@components";
 
 import { Container, Form, ListHeader, NumberOfPlayers } from "./styles";
+import { useRoutes } from "@routes/useRoutes";
 
 interface PlayerProps {
   name: string;
   id: string;
 }
 
+type RouteParams = {
+  groupName: string;
+};
+
 export const Players = () => {
+  const { route } = useRoutes();
+  const { groupName } = route.params as RouteParams;
+
   const [selectedTeam, setSelectedTeam] = useState<string>("Time A");
   const [players, setPlayers] = useState<PlayerProps[]>([
     { name: "Júlio", id: "1" },
@@ -42,7 +50,7 @@ export const Players = () => {
 
       <Highlight
         subTitle="Adicione a galera e separe os times"
-        title="Nome da turma"
+        title={groupName}
       />
 
       <Form>

@@ -1,4 +1,5 @@
 import { Highlight, Header, Button, Input } from "@components";
+import { useState } from "react";
 
 import { useRoutes } from "@routes/useRoutes";
 
@@ -6,9 +7,10 @@ import { Container, Content, Icon } from "./styles";
 
 export const NewGroup = () => {
   const { navigateToPlayers } = useRoutes();
+  const [groupName, setGroupName] = useState<string>("");
 
   const handleNewGroup = () => {
-    navigateToPlayers("1");
+    navigateToPlayers(groupName);
   };
 
   return (
@@ -23,7 +25,11 @@ export const NewGroup = () => {
           title="Nova turma"
         />
 
-        <Input placeholder="Nome da turma" />
+        <Input
+          placeholder="Nome da turma"
+          onChangeText={setGroupName}
+          value={groupName}
+        />
 
         <Button
           style={{ marginTop: 20 }}
