@@ -9,8 +9,8 @@ type Props = TouchableOpacityProps &
   };
 
 export const Filter: React.FC<Props> = ({
-  title,
   isActive = false,
+  title,
   ...rest
 }) => {
   return (

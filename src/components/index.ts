@@ -7,3 +7,4 @@ export * from "./Highlight";
 export * from "./Input";
 export * from "./ListEmpty";
 export * from "./Loading";
+export * from "./PlayerCard";
