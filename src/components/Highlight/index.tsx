@@ -1,5 +1,3 @@
-import logoSrc from "@assets/logo.png";
-
 import { Container, SubTitle, Title } from "./styles";
 
 interface Props {

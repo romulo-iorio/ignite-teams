@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Highlight, Header, GroupCard } from "@components";
+import { Highlight, Header, GroupCard, ListEmpty } from "@components";
 
 import { Container } from "./styles";
 import { FlatList } from "react-native";
@@ -24,6 +24,10 @@ export const Groups = () => {
       <Highlight title="Turmas" subTitle="Jogue com a sua turma" />
 
       <FlatList
+        ListEmptyComponent={() => (
+          <ListEmpty message="Nenhuma turma encontrada. Que tal cadastrar a primeira turma?" />
+        )}
+        contentContainerStyle={groups.length === 0 && { flex: 1 }}
         renderItem={({ item }) => <GroupCard title={item.groupName} />}
         keyExtractor={(item) => item.id}
         data={groups}
