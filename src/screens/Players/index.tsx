@@ -1,5 +1,5 @@
 import { Alert, FlatList } from "react-native";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import {
   Highlight,
@@ -13,19 +13,23 @@ import {
 } from "@components";
 
 import type { PlayerStorageDTO, PlayerTeam } from "@storage/players";
-import { Container, Form, ListHeader, NumberOfPlayers } from "./styles";
+import { addPlayerByGroup, getAllPlayersByGroup } from "@storage/players";
 import { generateRandomId } from "@utils/generateRandomId";
-import { addPlayerByGroup } from "@storage/players";
 import { useRoutes } from "@routes/useRoutes";
 import { AppError } from "@utils/AppError";
 
-interface PlayerProps {
-  name: string;
-  id: string;
-}
+import { Container, Form, ListHeader, NumberOfPlayers } from "./styles";
 
 type RouteParams = {
   groupName: string;
+};
+
+const fetchPlayersByGroup = async (
+  groupName: string,
+  setPlayers: React.Dispatch<React.SetStateAction<PlayerStorageDTO[]>>
+) => {
+  const players = await getAllPlayersByGroup(groupName);
+  setPlayers(players);
 };
 
 export const Players = () => {
@@ -34,7 +38,7 @@ export const Players = () => {
 
   const [selectedTeam, setSelectedTeam] = useState<PlayerTeam>("Time A");
   const [newPlayerName, setNewPlayerName] = useState<string>("");
-  const [players, setPlayers] = useState<PlayerProps[]>([]);
+  const [players, setPlayers] = useState<PlayerStorageDTO[]>([]);
 
   const handleAddNewPlayerToTeam = async () => {
     const trimmedPlayerName = newPlayerName.trim();
@@ -66,6 +70,15 @@ export const Players = () => {
       );
     }
   };
+
+  useEffect(() => {
+    fetchPlayersByGroup(groupName, setPlayers);
+  }, [groupName]);
+
+  const currentTeamPlayers = useMemo(
+    () => players.filter((player) => player.team === selectedTeam),
+    [players, selectedTeam]
+  );
 
   return (
     <Container>
@@ -102,7 +115,7 @@ export const Players = () => {
           horizontal
         />
 
-        <NumberOfPlayers>{players.length}</NumberOfPlayers>
+        <NumberOfPlayers>{currentTeamPlayers.length}</NumberOfPlayers>
       </ListHeader>
 
       <FlatList
@@ -118,7 +131,7 @@ export const Players = () => {
           players.length === 0 && { flex: 1 },
           { paddingBottom: 100 },
         ]}
-        data={players}
+        data={currentTeamPlayers}
       />
 
       <Button title="Remover Turma" type="SECONDARY" />
