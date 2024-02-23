@@ -28,7 +28,9 @@ export const Players = () => {
 
   const [selectedTeam, setSelectedTeam] = useState<PlayerTeam>("Time A");
 
-  const { players, setPlayers } = usePlayers({ selectedTeam });
+  const { players, setPlayers, handleRemovePlayerFromGroup } = usePlayers({
+    selectedTeam,
+  });
   const { handleAddNewPlayerToTeam, newPlayerName, setNewPlayerName } =
     useNewPlayer({ selectedTeam, setPlayers, newPlayerNameInputRef });
 
@@ -76,7 +78,10 @@ export const Players = () => {
           <ListEmpty message="Nenhuma turma encontrada. Que tal cadastrar a primeira turma?" />
         )}
         renderItem={({ item }) => (
-          <PlayerCard name={item.name} onRemovePlayer={() => {}} />
+          <PlayerCard
+            onRemovePlayer={() => handleRemovePlayerFromGroup(item.id)}
+            name={item.name}
+          />
         )}
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}

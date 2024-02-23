@@ -3,7 +3,7 @@ import { Alert } from "react-native";
 
 import type { PlayerStorageDTO, PlayerTeam } from "@storage/players";
 import type { RouteParams } from "@routes/useRoutes";
-import { getAllPlayersByGroup } from "@storage/players";
+import { getAllPlayersByGroup, removePlayerFromGroup } from "@storage/players";
 import { useRoutes } from "@routes/useRoutes";
 
 const fetchPlayersByGroup = async (
@@ -38,5 +38,24 @@ export const usePlayers = ({ selectedTeam }: Props) => {
     [players, selectedTeam]
   );
 
-  return { players: currentTeamPlayers, setPlayers };
+  const handleRemovePlayerFromGroup = async (playerId: string) => {
+    try {
+      await removePlayerFromGroup(playerId, groupName);
+      setPlayers((oldPlayers) =>
+        oldPlayers.filter((player) => player.id !== playerId)
+      );
+    } catch (error) {
+      console.error(error);
+      Alert.alert(
+        "Remover Pessoa",
+        "Não foi possível remover essa pessoa desse grupo."
+      );
+    }
+  };
+
+  return {
+    players: currentTeamPlayers,
+    handleRemovePlayerFromGroup,
+    setPlayers,
+  };
 };
