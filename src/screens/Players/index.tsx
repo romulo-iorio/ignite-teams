@@ -11,12 +11,13 @@ import {
   Input,
   ListEmpty,
   PlayerCard,
+  Loading,
 } from "@components";
 
 import type { RouteParams } from "@routes/useRoutes";
 import type { PlayerTeam } from "@storage/players";
-import { useRoutes } from "@routes/useRoutes";
 import { removeGroup as removeGroupStorage } from "@storage/group";
+import { useRoutes } from "@routes/useRoutes";
 
 import { Container, Form, ListHeader, NumberOfPlayers } from "./styles";
 import { useNewPlayer } from "./hooks/useNewPlayer";
@@ -29,9 +30,8 @@ export const Players = () => {
 
   const [selectedTeam, setSelectedTeam] = useState<PlayerTeam>("Time A");
 
-  const { players, setPlayers, handleRemovePlayerFromGroup } = usePlayers({
-    selectedTeam,
-  });
+  const { isLoading, players, setPlayers, handleRemovePlayerFromGroup } =
+    usePlayers({ selectedTeam });
   const { handleAddNewPlayerToTeam, newPlayerName, setNewPlayerName } =
     useNewPlayer({ selectedTeam, setPlayers, newPlayerNameInputRef });
 
@@ -102,24 +102,28 @@ export const Players = () => {
         <NumberOfPlayers>{players.length}</NumberOfPlayers>
       </ListHeader>
 
-      <FlatList
-        ListEmptyComponent={() => (
-          <ListEmpty message="Nenhuma turma encontrada. Que tal cadastrar a primeira turma?" />
-        )}
-        renderItem={({ item }) => (
-          <PlayerCard
-            onRemovePlayer={() => handleRemovePlayerFromGroup(item.id)}
-            name={item.name}
-          />
-        )}
-        keyExtractor={(item) => item.id}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={[
-          players.length === 0 && { flex: 1 },
-          { paddingBottom: 100 },
-        ]}
-        data={players}
-      />
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <FlatList
+          ListEmptyComponent={() => (
+            <ListEmpty message="Nenhuma turma encontrada. Que tal cadastrar a primeira turma?" />
+          )}
+          renderItem={({ item }) => (
+            <PlayerCard
+              onRemovePlayer={() => handleRemovePlayerFromGroup(item.id)}
+              name={item.name}
+            />
+          )}
+          keyExtractor={(item) => item.id}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={[
+            players.length === 0 && { flex: 1 },
+            { paddingBottom: 100 },
+          ]}
+          data={players}
+        />
+      )}
 
       <Button
         onPress={handleRemoveGroup}

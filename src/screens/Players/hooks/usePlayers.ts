@@ -8,8 +8,11 @@ import { useRoutes } from "@routes/useRoutes";
 
 const fetchPlayersByGroup = async (
   groupName: string,
-  setPlayers: React.Dispatch<React.SetStateAction<PlayerStorageDTO[]>>
+  setPlayers: React.Dispatch<React.SetStateAction<PlayerStorageDTO[]>>,
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
+  setIsLoading(true);
+
   try {
     const players = await getAllPlayersByGroup(groupName);
     setPlayers(players);
@@ -17,6 +20,8 @@ const fetchPlayersByGroup = async (
     console.error(error);
     Alert.alert("Pessoas", "Não foi possível carregar as pessoas desse grupo.");
   }
+
+  setIsLoading(false);
 };
 
 interface Props {
@@ -27,10 +32,11 @@ export const usePlayers = ({ selectedTeam }: Props) => {
   const { route } = useRoutes();
   const { groupName } = route.params as RouteParams;
 
+  const [isLoading, setIsLoading] = useState(true);
   const [players, setPlayers] = useState<PlayerStorageDTO[]>([]);
 
   useEffect(() => {
-    fetchPlayersByGroup(groupName, setPlayers);
+    fetchPlayersByGroup(groupName, setPlayers, setIsLoading);
   }, [groupName]);
 
   const currentTeamPlayers = useMemo(() => {
@@ -59,5 +65,6 @@ export const usePlayers = ({ selectedTeam }: Props) => {
     players: currentTeamPlayers,
     handleRemovePlayerFromGroup,
     setPlayers,
+    isLoading,
   };
 };
