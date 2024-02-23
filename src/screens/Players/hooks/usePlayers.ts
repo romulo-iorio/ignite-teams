@@ -33,10 +33,12 @@ export const usePlayers = ({ selectedTeam }: Props) => {
     fetchPlayersByGroup(groupName, setPlayers);
   }, [groupName]);
 
-  const currentTeamPlayers = useMemo(
-    () => players.filter((player) => player.team === selectedTeam),
-    [players, selectedTeam]
-  );
+  const currentTeamPlayers = useMemo(() => {
+    const filteredPlayers = players.filter(
+      (player) => player.team === selectedTeam
+    );
+    return filteredPlayers.sort((a, b) => a.name.localeCompare(b.name));
+  }, [players, selectedTeam]);
 
   const handleRemovePlayerFromGroup = async (playerId: string) => {
     try {
