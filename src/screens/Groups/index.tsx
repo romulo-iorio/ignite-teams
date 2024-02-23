@@ -1,6 +1,6 @@
 import { useFocusEffect } from "@react-navigation/native";
+import { Alert, FlatList } from "react-native";
 import { useCallback, useState } from "react";
-import { FlatList } from "react-native";
 
 import { Highlight, Header, GroupCard, ListEmpty, Button } from "@components";
 import { getAllGroups } from "@storage/group";
@@ -12,9 +12,14 @@ import { Container } from "./styles";
 const fetchGroups = async (
   setGroups: React.Dispatch<React.SetStateAction<Group[]>>
 ) => {
-  const groups = await getAllGroups();
-  const orderedGroups = groups.sort((a, b) => b.createdAt - a.createdAt);
-  setGroups(orderedGroups);
+  try {
+    const groups = await getAllGroups();
+    const orderedGroups = groups.sort((a, b) => b.createdAt - a.createdAt);
+    setGroups(orderedGroups);
+  } catch (error) {
+    console.error(error);
+    Alert.alert("Turmas", "Não foi possível carregar as turmas.");
+  }
 };
 
 export const Groups = () => {
