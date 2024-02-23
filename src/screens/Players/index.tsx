@@ -1,4 +1,4 @@
-import { FlatList } from "react-native";
+import { Alert, FlatList } from "react-native";
 import { useState } from "react";
 
 import {
@@ -12,8 +12,12 @@ import {
   ListEmpty,
 } from "@components";
 
+import type { PlayerStorageDTO, PlayerTeam } from "@storage/players";
 import { Container, Form, ListHeader, NumberOfPlayers } from "./styles";
+import { generateRandomId } from "@utils/generateRandomId";
+import { addPlayerByGroup } from "@storage/players";
 import { useRoutes } from "@routes/useRoutes";
+import { AppError } from "@utils/AppError";
 
 interface PlayerProps {
   name: string;
@@ -28,21 +32,40 @@ export const Players = () => {
   const { route } = useRoutes();
   const { groupName } = route.params as RouteParams;
 
-  const [selectedTeam, setSelectedTeam] = useState<string>("Time A");
-  const [players, setPlayers] = useState<PlayerProps[]>([
-    { name: "Júlio", id: "1" },
-    { name: "César", id: "2" },
-    { name: "Júlia", id: "3" },
-    { name: "Rafael", id: "4" },
-    { name: "Lucas", id: "5" },
-    { name: "Larissa", id: "6" },
-    { name: "Márcia", id: "7" },
-    { name: "Fernanda", id: "8" },
-    { name: "João", id: "9" },
-    { name: "Maria", id: "10" },
-    { name: "Pedro", id: "11" },
-    { name: "Paulo", id: "12" },
-  ]);
+  const [selectedTeam, setSelectedTeam] = useState<PlayerTeam>("Time A");
+  const [newPlayerName, setNewPlayerName] = useState<string>("");
+  const [players, setPlayers] = useState<PlayerProps[]>([]);
+
+  const handleAddNewPlayerToTeam = async () => {
+    const trimmedPlayerName = newPlayerName.trim();
+
+    try {
+      if (!trimmedPlayerName)
+        throw new AppError("O nome do jogador é obrigatório.");
+
+      const newPlayer: PlayerStorageDTO = {
+        createdAt: Date.now(),
+        team: selectedTeam,
+        name: trimmedPlayerName,
+        id: generateRandomId(),
+      };
+
+      await addPlayerByGroup(newPlayer, groupName);
+
+      setPlayers((oldPlayers) => [...oldPlayers, newPlayer]);
+      setNewPlayerName("");
+    } catch (error) {
+      const isAppError = error instanceof AppError;
+
+      if (isAppError) return Alert.alert("Nova Pessoa", error.message);
+
+      console.error(error);
+      Alert.alert(
+        "Nova Pessoa",
+        "Não foi possível adicionar uma pessoa a esse time desse grupo."
+      );
+    }
+  };
 
   return (
     <Container>
@@ -54,9 +77,15 @@ export const Players = () => {
       />
 
       <Form>
-        <Input placeholder="Nome da pessoa" autoCorrect={false} />
+        <Input
+          onSubmitEditing={handleAddNewPlayerToTeam}
+          onChangeText={setNewPlayerName}
+          value={newPlayerName}
+          autoCorrect={false}
+          placeholder="Nome da pessoa"
+        />
 
-        <ButtonIcon iconName="add" />
+        <ButtonIcon iconName="add" onPress={handleAddNewPlayerToTeam} />
       </Form>
 
       <ListHeader>
@@ -68,8 +97,8 @@ export const Players = () => {
               title={item}
             />
           )}
+          data={["Time A", "Time B"] as PlayerTeam[]}
           keyExtractor={(item) => String(item)}
-          data={["Time A", "Time B"]}
           horizontal
         />
 

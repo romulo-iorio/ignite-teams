@@ -44,7 +44,7 @@ export const NewGroup = () => {
         />
 
         <Input
-          onEndEditing={handleNewGroup}
+          onSubmitEditing={handleNewGroup}
           placeholder="Nome da turma"
           onChangeText={setGroupName}
           value={groupName}

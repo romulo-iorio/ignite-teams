@@ -23,5 +23,5 @@ export const addPlayerByGroup = async (
 
   const newPlayersJSON = JSON.stringify([...players, newPlayer]);
 
-  await AsyncStorage.setItem(storageKey, "");
+  await AsyncStorage.setItem(storageKey, newPlayersJSON);
 };

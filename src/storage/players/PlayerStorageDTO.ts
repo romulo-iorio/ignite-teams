@@ -1,4 +1,4 @@
-type PlayerTeam = "A" | "B";
+export type PlayerTeam = "Time A" | "Time B";
 
 export interface PlayerStorageDTO {
   createdAt: number;
