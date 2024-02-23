@@ -1,6 +1,6 @@
 import type { TextInput } from "react-native";
+import { Alert, FlatList } from "react-native";
 import { useRef, useState } from "react";
-import { FlatList } from "react-native";
 
 import {
   Button,
@@ -13,16 +13,17 @@ import {
   PlayerCard,
 } from "@components";
 
-import type { PlayerTeam } from "@storage/players";
 import type { RouteParams } from "@routes/useRoutes";
+import type { PlayerTeam } from "@storage/players";
 import { useRoutes } from "@routes/useRoutes";
+import { removeGroup as removeGroupStorage } from "@storage/group";
 
 import { Container, Form, ListHeader, NumberOfPlayers } from "./styles";
 import { useNewPlayer } from "./hooks/useNewPlayer";
 import { usePlayers } from "./hooks";
 
 export const Players = () => {
-  const { route } = useRoutes();
+  const { route, navigateToGroups } = useRoutes();
   const { groupName } = route.params as RouteParams;
   const newPlayerNameInputRef = useRef<TextInput | null>(null);
 
@@ -33,6 +34,34 @@ export const Players = () => {
   });
   const { handleAddNewPlayerToTeam, newPlayerName, setNewPlayerName } =
     useNewPlayer({ selectedTeam, setPlayers, newPlayerNameInputRef });
+
+  const removeGroup = async (groupName: string) => {
+    try {
+      await removeGroupStorage(groupName);
+
+      navigateToGroups();
+    } catch (error) {
+      console.error(error);
+      Alert.alert(
+        "Remover Grupo",
+        "Não foi possível remover esse grupo. Tente novamente."
+      );
+    }
+  };
+
+  const handleRemoveGroup = () => {
+    Alert.alert("Remover", "Tem certeza que deseja remover esse grupo?", [
+      {
+        text: "Não, cancelar!",
+        style: "cancel",
+      },
+      {
+        onPress: () => removeGroup(groupName),
+        text: "Sim, remover!",
+        style: "destructive",
+      },
+    ]);
+  };
 
   return (
     <Container>
@@ -92,7 +121,11 @@ export const Players = () => {
         data={players}
       />
 
-      <Button title="Remover Turma" type="SECONDARY" />
+      <Button
+        onPress={handleRemoveGroup}
+        title="Remover Turma"
+        type="SECONDARY"
+      />
     </Container>
   );
 };
