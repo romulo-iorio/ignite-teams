@@ -19,7 +19,7 @@ export const addPlayerByGroup = async (
   );
 
   if (playerAlreadyExistsOnGroup)
-    throw new AppError("Essa pessoa já está adicionada a um time desse grupo.");
+    throw new AppError("Essa pessoa já está adicionada a um time dessa turma.");
 
   const newPlayersJSON = JSON.stringify([...players, newPlayer]);
 

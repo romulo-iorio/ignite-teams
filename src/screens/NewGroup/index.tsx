@@ -17,17 +17,17 @@ export const NewGroup = () => {
 
     try {
       if (!trimmedGroupName)
-        throw new AppError("O nome do grupo é obrigatório.");
+        throw new AppError("O nome da turma é obrigatório.");
 
       await createGroup(trimmedGroupName);
       navigateToPlayers(trimmedGroupName);
     } catch (error) {
       const isAppError = error instanceof AppError;
 
-      if (isAppError) return Alert.alert("Novo Grupo", error.message);
+      if (isAppError) return Alert.alert("Nova Turma", error.message);
 
       console.error(error);
-      Alert.alert("Novo Grupo", "Não foi possível criar um novo grupo.");
+      Alert.alert("Nova Turma", "Não foi possível criar um nova turma.");
     }
   };
 

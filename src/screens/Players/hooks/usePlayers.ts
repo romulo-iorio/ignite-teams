@@ -18,7 +18,7 @@ const fetchPlayersByGroup = async (
     setPlayers(players);
   } catch (error) {
     console.error(error);
-    Alert.alert("Pessoas", "Não foi possível carregar as pessoas desse grupo.");
+    Alert.alert("Pessoas", "Não foi possível carregar as pessoas dessa turma.");
   }
 
   setIsLoading(false);
@@ -56,7 +56,7 @@ export const usePlayers = ({ selectedTeam }: Props) => {
       console.error(error);
       Alert.alert(
         "Remover Pessoa",
-        "Não foi possível remover essa pessoa desse grupo."
+        "Não foi possível remover essa pessoa dessa turma."
       );
     }
   };

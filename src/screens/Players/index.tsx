@@ -43,14 +43,14 @@ export const Players = () => {
     } catch (error) {
       console.error(error);
       Alert.alert(
-        "Remover Grupo",
-        "Não foi possível remover esse grupo. Tente novamente."
+        "Remover Turma",
+        "Não foi possível remover essa turma. Tente novamente."
       );
     }
   };
 
   const handleRemoveGroup = () => {
-    Alert.alert("Remover", "Tem certeza que deseja remover esse grupo?", [
+    Alert.alert("Remover", "Tem certeza que deseja remover essa turma?", [
       {
         text: "Não, cancelar!",
         style: "cancel",

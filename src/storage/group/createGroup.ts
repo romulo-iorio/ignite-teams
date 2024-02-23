@@ -15,7 +15,7 @@ export const createGroup = async (newGroupName: string) => {
   );
 
   if (groupAlreadyExists)
-    throw new AppError("Já existe um grupo cadastrado com esse nome.");
+    throw new AppError("Já existe uma turma cadastrado com esse nome.");
 
   const newGroup: Group = {
     createdAt: new Date().getTime(),

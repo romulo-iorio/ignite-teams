@@ -53,7 +53,7 @@ export const useNewPlayer = ({
       console.error(error);
       Alert.alert(
         "Nova Pessoa",
-        "Não foi possível adicionar uma pessoa a esse time desse grupo."
+        "Não foi possível adicionar uma pessoa a esse time dessa turma."
       );
     }
   };
