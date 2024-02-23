@@ -1,3 +1,4 @@
+import type { TextInput } from "react-native";
 import { Alert } from "react-native";
 import { useState } from "react";
 
@@ -11,10 +12,15 @@ import { generateRandomId } from "@utils/generateRandomId";
 
 interface Props {
   setPlayers: React.Dispatch<React.SetStateAction<PlayerStorageDTO[]>>;
+  newPlayerNameInputRef: React.MutableRefObject<TextInput | null>;
   selectedTeam: PlayerTeam;
 }
 
-export const useNewPlayer = ({ selectedTeam, setPlayers }: Props) => {
+export const useNewPlayer = ({
+  newPlayerNameInputRef,
+  selectedTeam,
+  setPlayers,
+}: Props) => {
   const { route } = useRoutes();
   const { groupName } = route.params as RouteParams;
 
@@ -38,6 +44,7 @@ export const useNewPlayer = ({ selectedTeam, setPlayers }: Props) => {
 
       setPlayers((oldPlayers) => [...oldPlayers, newPlayer]);
       setNewPlayerName("");
+      newPlayerNameInputRef.current?.blur();
     } catch (error) {
       const isAppError = error instanceof AppError;
 

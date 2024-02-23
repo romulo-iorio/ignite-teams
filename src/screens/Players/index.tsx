@@ -1,5 +1,6 @@
-import { Alert, FlatList } from "react-native";
-import { useEffect, useMemo, useState } from "react";
+import type { TextInput } from "react-native";
+import { useRef, useState } from "react";
+import { FlatList } from "react-native";
 
 import {
   Button,
@@ -23,12 +24,13 @@ import { usePlayers } from "./hooks";
 export const Players = () => {
   const { route } = useRoutes();
   const { groupName } = route.params as RouteParams;
+  const newPlayerNameInputRef = useRef<TextInput | null>(null);
 
   const [selectedTeam, setSelectedTeam] = useState<PlayerTeam>("Time A");
 
   const { players, setPlayers } = usePlayers({ selectedTeam });
   const { handleAddNewPlayerToTeam, newPlayerName, setNewPlayerName } =
-    useNewPlayer({ selectedTeam, setPlayers });
+    useNewPlayer({ selectedTeam, setPlayers, newPlayerNameInputRef });
 
   return (
     <Container>
@@ -42,6 +44,7 @@ export const Players = () => {
       <Form>
         <Input
           onSubmitEditing={handleAddNewPlayerToTeam}
+          inputRef={newPlayerNameInputRef}
           onChangeText={setNewPlayerName}
           value={newPlayerName}
           autoCorrect={false}
