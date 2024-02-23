@@ -1,5 +1,9 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 
+export type RouteParams = {
+  groupName: string;
+};
+
 export const useRoutes = () => {
   const { navigate, goBack: navigateToPreviousScreen } = useNavigation();
   const route = useRoute();

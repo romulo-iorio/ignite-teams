@@ -2,83 +2,33 @@ import { Alert, FlatList } from "react-native";
 import { useEffect, useMemo, useState } from "react";
 
 import {
-  Highlight,
-  Header,
   Button,
-  Input,
   ButtonIcon,
   Filter,
-  PlayerCard,
+  Highlight,
+  Header,
+  Input,
   ListEmpty,
+  PlayerCard,
 } from "@components";
 
-import type { PlayerStorageDTO, PlayerTeam } from "@storage/players";
-import { addPlayerByGroup, getAllPlayersByGroup } from "@storage/players";
-import { generateRandomId } from "@utils/generateRandomId";
+import type { PlayerTeam } from "@storage/players";
+import type { RouteParams } from "@routes/useRoutes";
 import { useRoutes } from "@routes/useRoutes";
-import { AppError } from "@utils/AppError";
 
 import { Container, Form, ListHeader, NumberOfPlayers } from "./styles";
-
-type RouteParams = {
-  groupName: string;
-};
-
-const fetchPlayersByGroup = async (
-  groupName: string,
-  setPlayers: React.Dispatch<React.SetStateAction<PlayerStorageDTO[]>>
-) => {
-  const players = await getAllPlayersByGroup(groupName);
-  setPlayers(players);
-};
+import { useNewPlayer } from "./hooks/useNewPlayer";
+import { usePlayers } from "./hooks";
 
 export const Players = () => {
   const { route } = useRoutes();
   const { groupName } = route.params as RouteParams;
 
   const [selectedTeam, setSelectedTeam] = useState<PlayerTeam>("Time A");
-  const [newPlayerName, setNewPlayerName] = useState<string>("");
-  const [players, setPlayers] = useState<PlayerStorageDTO[]>([]);
 
-  const handleAddNewPlayerToTeam = async () => {
-    const trimmedPlayerName = newPlayerName.trim();
-
-    try {
-      if (!trimmedPlayerName)
-        throw new AppError("O nome do jogador é obrigatório.");
-
-      const newPlayer: PlayerStorageDTO = {
-        createdAt: Date.now(),
-        team: selectedTeam,
-        name: trimmedPlayerName,
-        id: generateRandomId(),
-      };
-
-      await addPlayerByGroup(newPlayer, groupName);
-
-      setPlayers((oldPlayers) => [...oldPlayers, newPlayer]);
-      setNewPlayerName("");
-    } catch (error) {
-      const isAppError = error instanceof AppError;
-
-      if (isAppError) return Alert.alert("Nova Pessoa", error.message);
-
-      console.error(error);
-      Alert.alert(
-        "Nova Pessoa",
-        "Não foi possível adicionar uma pessoa a esse time desse grupo."
-      );
-    }
-  };
-
-  useEffect(() => {
-    fetchPlayersByGroup(groupName, setPlayers);
-  }, [groupName]);
-
-  const currentTeamPlayers = useMemo(
-    () => players.filter((player) => player.team === selectedTeam),
-    [players, selectedTeam]
-  );
+  const { players, setPlayers } = usePlayers({ selectedTeam });
+  const { handleAddNewPlayerToTeam, newPlayerName, setNewPlayerName } =
+    useNewPlayer({ selectedTeam, setPlayers });
 
   return (
     <Container>
@@ -115,7 +65,7 @@ export const Players = () => {
           horizontal
         />
 
-        <NumberOfPlayers>{currentTeamPlayers.length}</NumberOfPlayers>
+        <NumberOfPlayers>{players.length}</NumberOfPlayers>
       </ListHeader>
 
       <FlatList
@@ -131,7 +81,7 @@ export const Players = () => {
           players.length === 0 && { flex: 1 },
           { paddingBottom: 100 },
         ]}
-        data={currentTeamPlayers}
+        data={players}
       />
 
       <Button title="Remover Turma" type="SECONDARY" />
